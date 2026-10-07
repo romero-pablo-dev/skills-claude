@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Le canari Claude · Pablo Romero</title>
+<meta name="description" content="Sache en un coup d'œil quand ta session Claude commence à dérailler. Le prompt à coller dans Claude Code ou Cowork, installation en 1 minute.">
+<meta property="og:title" content="Le canari Claude">
+<meta property="og:description" content="Sache quand ta session Claude commence à dérailler. Installation en 1 minute.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+/* Mise en page : une colonne étroite façon fiche, comme la page « 83 skills ». DA Pablo Romero, thème clair assumé. */
+:root{
+  --ochre:#C64902; --creme:#F7E0C3; --brun:#5C1A08; --caramel:#AD6C0B; --ambre:#E09A2B;
+  --creme-clair:#FBEEDC; --texte-doux:#7a3a22; --ombre:rgba(92,26,8,.14); --trait:rgba(198,73,2,.3);
+  --display:Anton,Impact,"Arial Narrow",sans-serif;
+  --corps:Poppins,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--creme);color:var(--brun);font-family:var(--corps);font-weight:500;font-size:17px;line-height:1.55}
+.wrap{max-width:720px;margin:0 auto;padding-inline:20px;padding-block:0 56px}
+header{padding-block:48px 24px}
+.eyebrow{font-weight:700;font-size:13px;letter-spacing:1.6px;color:var(--caramel);text-transform:uppercase;margin:0 0 14px}
+h1{font-family:var(--display);font-weight:400;font-size:clamp(46px,12vw,82px);line-height:.92;letter-spacing:-.5px;margin:0 0 18px;text-transform:uppercase;text-wrap:balance}
+h1 .accent{color:var(--ochre)}
+.chapo{font-size:19px;margin:0 0 10px;max-width:60ch}
+.chapo b{font-weight:700}
+.duree{display:inline-block;background:var(--ochre);color:var(--creme);font-weight:700;font-size:13px;letter-spacing:.6px;padding:5px 11px;border-radius:7px;margin-top:8px}
+section{margin-top:40px}
+h2{font-family:var(--display);font-weight:400;font-size:clamp(28px,6.6vw,40px);line-height:1;text-transform:uppercase;letter-spacing:-.2px;margin:0 0 14px;text-wrap:balance}
+h2 .num{color:var(--ochre)}
+p{margin:0 0 12px;max-width:65ch}
+.etapes{counter-reset:e;list-style:none;padding:0;margin:18px 0 0;display:grid;gap:14px}
+.etapes li{counter-increment:e;position:relative;padding-left:46px;min-width:0}
+.etapes li::before{content:counter(e);position:absolute;left:0;top:-2px;width:32px;height:32px;border-radius:9px;background:var(--ochre);color:var(--creme);font-family:var(--display);font-size:19px;display:flex;align-items:center;justify-content:center}
+.etapes b{font-weight:700}
+.prompt{background:var(--brun);color:var(--creme);border-radius:20px;padding:26px 20px 24px;margin-top:40px}
+.prompt h2{color:var(--creme)}
+.prompt h2 .num{color:var(--ambre)}
+.prompt p{color:var(--creme)}
+.cmd{position:relative;background:var(--brun);border-radius:12px;margin:14px 0;min-width:0}
+.prompt .cmd{background:rgba(0,0,0,.28)}
+.cmd pre{margin:0;padding:48px 16px 16px;font-family:var(--mono);font-size:14px;line-height:1.6;color:var(--creme);white-space:pre-wrap;overflow-wrap:anywhere}
+.cmd button{position:absolute;top:9px;right:9px;border:0;cursor:pointer;background:var(--creme);color:var(--brun);font-family:inherit;font-weight:700;font-size:13px;padding:8px 12px;border-radius:8px}
+.cmd button:focus-visible{outline:3px solid var(--ambre);outline-offset:2px}
+.cmd button.ok{background:var(--ambre);color:var(--brun)}
+.note{font-size:15px;color:var(--texte-doux);margin:10px 0 0}
+.prompt .note{color:var(--creme);opacity:.85}
+.table-wrap{overflow-x:auto;margin-top:14px;border-radius:14px;box-shadow:0 10px 24px var(--ombre)}
+table{border-collapse:collapse;width:100%;min-width:480px;background:var(--creme-clair);font-size:15px}
+th,td{text-align:left;padding:12px 14px;vertical-align:top;border-bottom:1px solid var(--trait)}
+th{font-weight:700;font-size:12px;letter-spacing:1.2px;text-transform:uppercase;color:var(--caramel)}
+tr:last-child td{border-bottom:0}
+td:first-child{font-weight:700;white-space:nowrap}
+code{font-family:var(--mono);font-size:.88em;background:rgba(198,73,2,.1);padding:1px 5px;border-radius:5px;overflow-wrap:anywhere}
+.mort{background:var(--creme-clair);border-radius:18px;padding:22px 20px;box-shadow:0 10px 24px var(--ombre)}
+.astuce{border-left:4px solid var(--ochre);padding-left:14px;margin-top:16px;font-size:15px;color:var(--texte-doux)}
+ul.limites{padding-left:20px;margin:0;display:grid;gap:8px}
+footer{margin-top:48px;padding-top:22px;border-top:2px solid var(--trait);font-size:16px}
+a{color:var(--ochre);text-decoration:none;font-weight:700;border-bottom:2px solid var(--trait)}
+a:hover{border-bottom-color:var(--ochre)}
+@media (prefers-reduced-motion:no-preference){.cmd button{transition:background .15s}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <p class="eyebrow">Guide Claude · Pablo Romero</p>
+    <h1>Le canari <span class="accent">Claude</span></h1>
+    <p class="chapo">Sache en un coup d'œil quand ta session Claude commence à dérailler. <b>Une seule instruction</b> : Claude commence chaque réponse par ton prénom. Le jour où ton prénom disparaît, ton canari est mort et il est temps d'ouvrir une nouvelle session.</p>
+    <span class="duree">Installation : 1 minute</span>
+  </header>
+
+  <section>
+    <h2>Pourquoi ça <span class="num">marche</span></h2>
+    <p>L'idée vient de Peter Steinberger, le créateur d'OpenClaw. Dans les mines, on descendait un canari : s'il arrêtait de chanter, l'air devenait dangereux bien avant que les mineurs le sentent.</p>
+    <p>Claude marche pareil. Sur une longue session, il ne passe pas d'un coup de parfait à n'importe quoi :</p>
+    <ol class="etapes">
+      <li><b>D'abord</b>, il oublie en silence une petite instruction : ton prénom.</li>
+      <li><b>Ensuite</b>, il commence à inventer : un fichier qui n'existe pas, une fonction qui n'a jamais existé, une décision que tu avais écartée.</li>
+      <li><b>Quand tu t'en rends compte</b>, tu ne peux déjà plus faire confiance aux dernières réponses.</li>
+    </ol>
+    <p class="note">Le canari te fait voir l'étape 1. Tu gagnes les étapes 2 et 3.</p>
+  </section>
+
+  <section class="prompt" aria-labelledby="t-prompt">
+    <h2 id="t-prompt">Le prompt <span class="num">à coller</span></h2>
+    <p>Ouvre <b>Claude Code</b> ou <b>Claude Cowork</b>, colle ce prompt tel quel et laisse Claude faire.</p>
+    <div class="cmd">
+      <button type="button" id="copier-prompt" data-cible="prompt-texte">Copier le prompt</button>
+<pre id="prompt-texte">Installe-moi le « canari Claude ».
+
+Le principe : tu commences chacune de tes réponses par mon prénom. Le jour où tu oublies, je sais que la session se dégrade et j'en ouvre une nouvelle.
+
+1. Si tu ne connais pas mon prénom, demande-le-moi avant de continuer.
+
+2. Ajoute ce bloc à mes instructions globales, en remplaçant [PRÉNOM] par mon prénom :
+
+## Canari
+Commence chacune de tes réponses par mon prénom, [PRÉNOM], suivi d'une virgule. C'est mon signal de contrôle : ne l'omets jamais, même sur une réponse courte ou technique.
+
+Où l'ajouter :
+- Si tu es Claude Code : à la fin du fichier ~/.claude/CLAUDE.md (sous Windows : C:\Users\&lt;mon utilisateur&gt;\.claude\CLAUDE.md). Crée le fichier s'il n'existe pas. Ne supprime et ne modifie rien de ce qui s'y trouve déjà. Si un bloc « ## Canari » existe déjà, remplace seulement ce bloc.
+- Si tu es Claude Cowork, ou si tu ne peux pas modifier ce fichier : donne-moi le bloc prêt à coller, et dis-moi exactement où le coller (dans Cowork : Paramètres, puis les instructions globales).
+
+3. Dis-moi ce que tu as fait, puis termine en me rappelant la règle : quand une de tes réponses ne commence plus par mon prénom, j'ouvre une nouvelle session.</pre>
+    </div>
+    <p class="note">Le canari est actif dès ta prochaine session. Ouvre une nouvelle session et vérifie : la première réponse doit commencer par ton prénom.</p>
+  </section>
+
+  <section>
+    <h2>Installation <span class="num">à la main</span></h2>
+    <p>Tu préfères le faire toi-même ? Copie ce bloc et remplace <code>[PRÉNOM]</code> par ton prénom (ou par un surnom, ça marche aussi).</p>
+    <div class="cmd">
+      <button type="button" id="copier-bloc" data-cible="bloc-texte">Copier le bloc</button>
+<pre id="bloc-texte">## Canari
+Commence chacune de tes réponses par mon prénom, [PRÉNOM], suivi d'une virgule. C'est mon signal de contrôle : ne l'omets jamais, même sur une réponse courte ou technique.</pre>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Où tu utilises Claude</th><th>Où coller le bloc</th></tr></thead>
+        <tbody>
+          <tr><td>Claude Code</td><td>À la fin du fichier <code>~/.claude/CLAUDE.md</code> (crée-le s'il n'existe pas). Il s'applique à tous tes projets.</td></tr>
+          <tr><td>Un seul projet</td><td>À la fin du fichier <code>CLAUDE.md</code> à la racine du projet.</td></tr>
+          <tr><td>Claude Cowork</td><td>Paramètres, puis les instructions globales.</td></tr>
+          <tr><td>Claude.ai</td><td>Paramètres, puis le champ des préférences personnelles de ton profil. Ou dans les instructions d'un Projet pour le limiter à ce projet.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>Ton canari est mort : <span class="num">que faire</span></h2>
+    <div class="mort">
+      <p>Une réponse arrive sans ton prénom ? Ne continue pas dans cette session.</p>
+      <ol class="etapes">
+        <li><b>Demande un passage de relais</b> avant de partir :
+          <div class="cmd">
+            <button type="button" id="copier-relais" data-cible="relais-texte">Copier</button>
+<pre id="relais-texte">Résume en 10 lignes où on en est : ce qui est fait, ce qui reste, les décisions prises et les fichiers touchés.</pre>
+          </div>
+        </li>
+        <li><b>Ouvre une nouvelle session</b> (dans Claude Code : <code>/clear</code>, ou une nouvelle fenêtre).</li>
+        <li><b>Colle le résumé</b> et reprends. Le canari revient dès la première réponse.</li>
+      </ol>
+      <p class="astuce">Si le canari meurt très vite à chaque fois, tu demandes sûrement trop de choses dans une seule session. Découpe en tâches plus petites.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>Ce que le canari <span class="num">ne fait pas</span></h2>
+    <ul class="limites">
+      <li>Il ne répare rien : il te prévient. La réparation, c'est la nouvelle session.</li>
+      <li>Il ne remplace pas ta relecture sur les sujets sensibles : code en production, chiffres, envois.</li>
+      <li>Un canari vivant ne garantit pas une réponse parfaite. Un canari mort te dit presque toujours que la suite va se dégrader.</li>
+    </ul>
+  </section>
+
+  <footer>
+    Tu veux automatiser ton business avec Claude ? Suis <a href="https://www.instagram.com/pabloetlucas/" target="_blank" rel="noopener">@pabloetlucas</a> sur Instagram.
+  </footer>
+</div>
+
+<script>
+document.querySelectorAll('.cmd button').forEach(function (b) {
+  var libelle = b.textContent;
+  b.addEventListener('click', function () {
+    var el = document.getElementById(b.dataset.cible);
+    var texte = el.textContent;
+    function ok() { b.textContent = 'Copié'; b.classList.add('ok'); setTimeout(function () { b.textContent = libelle; b.classList.remove('ok'); }, 1800); }
+    function repli() {
+      var r = document.createRange(); r.selectNodeContents(el);
+      var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+      b.textContent = 'Sélectionné, fais Ctrl+C';
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(texte).then(ok, repli);
+    } else { repli(); }
+  });
+});
+</script>
+</body>
+</html>
